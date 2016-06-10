@@ -21,5 +21,5 @@ PlayerState::~PlayerState()
 
 std::string PlayerState::ToString()
 {
-	return m_Name.asString() + " Key:" + m_Key.asString() + " Points:" + m_Points.asString() + " Killed:" + m_Killed.asString() + " BombBag:" + m_BombBag.asString() + " BombRad:" + m_BombRadius.asString() + " X:" + m_LocationX.asString() + " Y:" + m_LocationY.asString();
+	return m_Name.asString() + "\tKey:" + m_Key.asString() + "\tPoints:" + m_Points.asString() + "\tKilled:" + m_Killed.asString() + "\tBombBag:" + m_BombBag.asString() + "\tBombRad:" + m_BombRadius.asString() + "\tX:" + m_LocationX.asString() + "\tY:" + m_LocationY.asString();
 }

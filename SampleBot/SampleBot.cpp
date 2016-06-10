@@ -10,6 +10,7 @@
 #include "json\json-forwards.h"
 
 #include "PlayerState.h"
+#include "Block.h"
 using namespace std;
 
 void readStateFile(string filePath);
@@ -59,7 +60,6 @@ void readStateFile(string filePath)
 		const Json::Value GameBlocksRows = Root["GameBlocks"];
 
 		vector<PlayerState> vPlayerState;
-		cout << RegisteredPlayerEntities.size() << endl;
 		for (int index = 0; index < RegisteredPlayerEntities.size(); ++index)
 		{
 			const Json::Value Name = RegisteredPlayerEntities[index]["Name"];
@@ -69,27 +69,35 @@ void readStateFile(string filePath)
 			const Json::Value BombBag = RegisteredPlayerEntities[index]["BombBag"];
 			const Json::Value BombRadius = RegisteredPlayerEntities[index]["BombRadius"];
 			const Json::Value Location = RegisteredPlayerEntities[index]["Location"];
-
-
 			PlayerState Player(Name, Key, Points, Killed, BombBag, BombRadius, Location);
 			cout << Player.ToString() << endl;
 			vPlayerState.push_back(Player);
 		}
-
-
-
 		cout << CurrentRound.asString() << endl;
 		cout << PlayerBounty.asString() << endl;
 		cout << MapHeight.asString() << endl;
 		cout << MapWidth.asString() << endl;
 		cout << MapSeed.asString() << endl;
 
-		
-		
 		// Iterate over the sequence elements.
-		cout << "GameBlocks Size= " << GameBlocksRows.size() << endl;
-		for (int index = 0; index < GameBlocksRows.size(); ++index);
-			//cout << GameBlocksRows[index].asString();
+		cout << "GameBlocks number of rows = " << GameBlocksRows.size() << endl;
+		for (int index = 0; index < GameBlocksRows.size(); ++index)
+		{
+			for (int Blockindex = 0; Blockindex < GameBlocksRows[index].size(); ++Blockindex)
+			{
+				const Json::Value Block = GameBlocksRows[index][Blockindex];
+
+				const Json::Value EntityType = Block["Entity"];
+				const Json::Value Bomb = Block["Bomb"];
+				const Json::Value PowerUp = Block["PowerUp"];
+				const Json::Value Exploding = Block["Exploding"];
+				const Json::Value Location = Block["Location"];
+				cBlock CurrentBlock(EntityType, Bomb, PowerUp, Exploding, Location);
+				Log.WriteToLog(CurrentBlock.ToString());
+			}
+
+		}
+			
 		myfile.close();
 	}
 }
