@@ -1,0 +1,113 @@
+// SampleBot.cpp : Defines the entry point for the console application.
+//
+
+#include <random>
+#include <iostream>
+
+///Local Includes
+#include "Logger.h"
+#include "json\json.h"
+#include "json\json-forwards.h"
+
+#include "PlayerState.h"
+using namespace std;
+
+void readStateFile(string filePath);
+void writeMoveFile(string filePath);
+
+//Instantiate the Log File
+Logger Log("C:\\Users\\bpiner\\Downloads\\Bomberman\\Sample Bots\\C++\\MoveLog");
+
+
+int main(int argc, char* argv[])
+{
+	string filePath = "";
+
+	cout << "Args: " << argc << std::endl;
+	cout << "Player Key: " << argv[1] << std::endl;
+	if (argc == 3)
+	{
+		string Path (argv[2]);
+		filePath = Path;
+		cout << "File Path: " << filePath << std::endl;
+	}
+	Log.WriteToLog("Parsed args");
+
+
+	readStateFile(filePath);
+	writeMoveFile(filePath);
+	return 0;
+}
+
+void readStateFile(string filePath)
+{
+	cout << "Reading state file " << filePath + "/" + "state.json" << std::endl;
+	string fileContent;
+	string line;
+	ifstream myfile(filePath + "/" + "state.json");
+
+	Json::Value Root;
+	if (myfile.is_open())
+	{
+		myfile >> Root;
+		const Json::Value RegisteredPlayerEntities = Root["RegisteredPlayerEntities"];
+		const Json::Value CurrentRound = Root["CurrentRound"];
+		const Json::Value PlayerBounty = Root["PlayerBounty"];
+		const Json::Value MapHeight = Root["MapHeight"];
+		const Json::Value MapWidth = Root["MapWidth"];
+		const Json::Value MapSeed = Root["MapSeed"];
+		const Json::Value GameBlocksRows = Root["GameBlocks"];
+
+		vector<PlayerState> vPlayerState;
+		cout << RegisteredPlayerEntities.size() << endl;
+		for (int index = 0; index < RegisteredPlayerEntities.size(); ++index)
+		{
+			const Json::Value Name = RegisteredPlayerEntities[index]["Name"];
+			const Json::Value Key = RegisteredPlayerEntities[index]["Key"];
+			const Json::Value Points = RegisteredPlayerEntities[index]["Points"];
+			const Json::Value Killed = RegisteredPlayerEntities[index]["Killed"];
+			const Json::Value BombBag = RegisteredPlayerEntities[index]["BombBag"];
+			const Json::Value BombRadius = RegisteredPlayerEntities[index]["BombRadius"];
+			const Json::Value Location = RegisteredPlayerEntities[index]["Location"];
+
+
+			PlayerState Player(Name, Key, Points, Killed, BombBag, BombRadius, Location);
+			cout << Player.ToString() << endl;
+			vPlayerState.push_back(Player);
+		}
+
+
+
+		cout << CurrentRound.asString() << endl;
+		cout << PlayerBounty.asString() << endl;
+		cout << MapHeight.asString() << endl;
+		cout << MapWidth.asString() << endl;
+		cout << MapSeed.asString() << endl;
+
+		
+		
+		// Iterate over the sequence elements.
+		cout << "GameBlocks Size= " << GameBlocksRows.size() << endl;
+		for (int index = 0; index < GameBlocksRows.size(); ++index);
+			//cout << GameBlocksRows[index].asString();
+		myfile.close();
+	}
+}
+
+void writeMoveFile(string filePath)
+{
+	cout << "Writing move file " << filePath + "/" + "move.txt" << std::endl;
+	ofstream outfile(filePath + "/" + "move.txt");
+
+	if (outfile.is_open())
+	{
+		random_device rd; 
+		mt19937 rng(rd());
+		uniform_int_distribution<int> uni(1, 6);
+		int out = uni(rng);
+		outfile << out << std::endl;
+		outfile.close();
+		Log.WriteToLog("MOVE=" + to_string(out));
+	}
+
+}

@@ -1,0 +1,8 @@
+{
+	"Author":"Brandon Piner",
+    "Email":"brandon2255p@gmail.com",
+    "NickName" :"Brandon",
+    "BotType": "CPlusPlus",
+    "ProjectLocation" : "SampleBot\\",
+    "RunFile" : "SampleBot\\Debug\\SampleBot.exe"
+}
