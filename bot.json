@@ -4,5 +4,5 @@
     "NickName" :"Brandon",
     "BotType": "CPlusPlus",
     "ProjectLocation" : "SampleBot\\",
-    "RunFile" : "SampleBot\\Debug\\SampleBot.exe"
+    "RunFile" : "SampleBot\\Release\\SampleBot.exe"
 }

@@ -11,6 +11,8 @@
 
 #include "PlayerState.h"
 #include "Block.h"
+#include "Map.h"
+
 using namespace std;
 
 void readStateFile(string filePath);
@@ -19,6 +21,7 @@ void writeMoveFile(string filePath);
 //Instantiate the Log File
 Logger Log("C:\\Users\\bpiner\\Downloads\\Bomberman\\Sample Bots\\C++\\MoveLog");
 
+cMapState currentMap;
 
 int main(int argc, char* argv[])
 {
@@ -42,10 +45,10 @@ int main(int argc, char* argv[])
 
 void readStateFile(string filePath)
 {
-	cout << "Reading state file " << filePath + "/" + "state.json" << std::endl;
+	cout << "Reading state file " << filePath + "\\" + "state.json" << std::endl;
 	string fileContent;
 	string line;
-	ifstream myfile(filePath + "/" + "state.json");
+	ifstream myfile(filePath + "\\" + "state.json");
 
 	Json::Value Root;
 	if (myfile.is_open())
@@ -80,7 +83,6 @@ void readStateFile(string filePath)
 		cout << MapSeed.asString() << endl;
 
 		// Iterate over the sequence elements.
-		cout << "GameBlocks number of rows = " << GameBlocksRows.size() << endl;
 		for (int index = 0; index < GameBlocksRows.size(); ++index)
 		{
 			for (int Blockindex = 0; Blockindex < GameBlocksRows[index].size(); ++Blockindex)
@@ -93,25 +95,24 @@ void readStateFile(string filePath)
 				const Json::Value Exploding = Block["Exploding"];
 				const Json::Value Location = Block["Location"];
 				cBlock CurrentBlock(EntityType, Bomb, PowerUp, Exploding, Location);
+				currentMap.m_vMap.push_back(CurrentBlock);
 				Log.WriteToLog(CurrentBlock.ToString());
 			}
-
 		}
-			
 		myfile.close();
 	}
 }
 
 void writeMoveFile(string filePath)
 {
-	cout << "Writing move file " << filePath + "/" + "move.txt" << std::endl;
-	ofstream outfile(filePath + "/" + "move.txt");
+	cout << "Writing move file " << filePath + "\\" + "move.txt" << std::endl;
+	ofstream outfile(filePath + "\\" + "move.txt");
 
 	if (outfile.is_open())
 	{
 		random_device rd; 
 		mt19937 rng(rd());
-		uniform_int_distribution<int> uni(1, 6);
+		uniform_int_distribution<int> uni(1, 4);
 		int out = uni(rng);
 		outfile << out << std::endl;
 		outfile.close();
