@@ -1,6 +1,7 @@
 #pragma once
 #include "Block.h"
 #include <vector>
+#include "Location.h"
 class cMapState
 {
 public:
@@ -9,6 +10,8 @@ public:
 
 	std::vector<cBlock> m_vMap;
 
-	void ClosestPowerUp(int X, int Y);
+	void ClosestPowerUp(cLocation &ToThisLocation);
+	void ClosestBomb(cLocation &ToThisLocation);
+
 };
 

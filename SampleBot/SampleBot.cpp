@@ -22,6 +22,7 @@ void writeMoveFile(string filePath);
 Logger Log("C:\\Users\\bpiner\\Downloads\\Bomberman\\Sample Bots\\C++\\MoveLog");
 
 cMapState currentMap;
+vector<PlayerState> vPlayerState;
 
 int main(int argc, char* argv[])
 {
@@ -62,7 +63,7 @@ void readStateFile(string filePath)
 		const Json::Value MapSeed = Root["MapSeed"];
 		const Json::Value GameBlocksRows = Root["GameBlocks"];
 
-		vector<PlayerState> vPlayerState;
+		
 		for (int index = 0; index < RegisteredPlayerEntities.size(); ++index)
 		{
 			const Json::Value Name = RegisteredPlayerEntities[index]["Name"];
@@ -105,6 +106,8 @@ void readStateFile(string filePath)
 
 void writeMoveFile(string filePath)
 {
+	currentMap.ClosestPowerUp(vPlayerState[3].GetLocation());
+	currentMap.ClosestBomb(vPlayerState[3].GetLocation());
 	cout << "Writing move file " << filePath + "\\" + "move.txt" << std::endl;
 	ofstream outfile(filePath + "\\" + "move.txt");
 

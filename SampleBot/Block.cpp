@@ -8,8 +8,7 @@ m_PowerUp(PowerUp),
 m_Exploding(Exploding),
 m_Location(Location)
 {
-	m_LocationX = m_Location["X"];
-	m_LocationY = m_Location["Y"];
+
 
 	if (Entity.compare(Json::Value::nullRef))
 	{
@@ -20,14 +19,16 @@ m_Location(Location)
 		else if (Entity["$type"].asString() == ("Domain.Entities.PlayerEntity, Domain"))
 			m_bPlayer = true;
 	}
-	if (Bomb.compare(Json::Value::null))
+	if (Bomb.isNull())
 	{
-		m_bBomb = true;
+		m_bBomb = false;
 	}
-	if (PowerUp.compare(Json::Value::null))
+	else m_bBomb = true;
+	if (PowerUp.isNull())
 	{
-		m_bPowerUp = true;
+		m_bPowerUp = false;
 	}
+	else m_bPowerUp = true;
 
 }
 
@@ -39,15 +40,29 @@ cBlock::~cBlock()
 std::string cBlock::ToString()
 {
 	if (m_bDestructableWall)
-		return "ITS A DESTRUCTABLE WALL! " + m_Entity["$type"].asString() + "\tX:" + m_LocationX.asString() + "\tY:" + m_LocationY.asString();
+		return "ITS A DESTRUCTABLE WALL! " + m_Entity["$type"].asString() + "\tX:" + std::to_string(m_Location.GetX()) + "\tY:" + std::to_string(m_Location.GetY());
 	if (m_bIndestructibleWall)
-		return "ITS AN INDESTRUCTABLE WALL! " + m_Entity["$type"].asString() + "\tX:" + m_LocationX.asString() + "\tY:" + m_LocationY.asString();
+		return "ITS AN INDESTRUCTABLE WALL! " + m_Entity["$type"].asString() + "\tX:" + std::to_string(m_Location.GetX()) + "\tY:" + std::to_string(m_Location.GetY());
 	if (m_bPlayer)
-		return "ITS A PLAYER! " + m_Entity["$type"].asString() + "\tX:" + m_LocationX.asString() + "\tY:" + m_LocationY.asString();
+		return "ITS A PLAYER! " + m_Entity["$type"].asString() + "\tX:" + std::to_string(m_Location.GetX()) + "\tY:" + std::to_string(m_Location.GetY());
 	if (m_bPowerUp)
-		return "ITS A POWERUP! " + m_PowerUp["$type"].asString() + "\tX:" + m_LocationX.asString() + "\tY:" + m_LocationY.asString();
+		return "ITS A POWERUP! " + m_PowerUp["$type"].asString() + "\tX:" + std::to_string(m_Location.GetX()) + "\tY:" + std::to_string(m_Location.GetY());
 	if (m_bBomb)
-		return "ITS A BOMB! " + m_Entity.asString() + "\tBomb:" + m_Bomb["Owner"]["Name"].asString() + "\tX:" + m_LocationX.asString() + "\tY:" + m_LocationY.asString();
-	return "ITS A NOTHING! " + m_Entity.asString() + "\tBomb:" + m_Bomb.asString() + "\tPowerUp:" + m_PowerUp.asString() + "\tExploding:" + m_Exploding.asString() + "\tX:" + m_LocationX.asString() + "\tY:" + m_LocationY.asString();
+		return "ITS A BOMB! " + m_Entity.asString() + "\tBomb:" + m_Bomb["Owner"]["Name"].asString() + "\tX:" + std::to_string(m_Location.GetX()) + "\tY:" + std::to_string(m_Location.GetY());
+	return "ITS A NOTHING! " + m_Entity.asString() + "\tBomb:" + m_Bomb.asString() + "\tPowerUp:" + m_PowerUp.asString() + "\tExploding:" + m_Exploding.asString() + "\tX:" + std::to_string(m_Location.GetX()) + "\tY:" + std::to_string(m_Location.GetY());
 }
 
+bool cBlock::GetIsPowerUp()
+{
+	return m_bPowerUp;
+}
+
+bool cBlock::GetIsBomb()
+{
+	return m_bBomb;
+}
+
+cLocation cBlock::GetLocation()
+{
+	return m_Location;
+}

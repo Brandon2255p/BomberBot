@@ -83,6 +83,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="json\json-forwards.h" />
     <ClInclude Include="json\json.h" />
+    <ClInclude Include="Location.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="PlayerState.h" />
@@ -92,6 +93,7 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="jsoncpp.cpp" />
+    <ClCompile Include="Location.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="PlayerState.cpp" />
