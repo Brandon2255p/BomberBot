@@ -29,8 +29,8 @@ void NeuralNetwork::runNeuralNetwork() {
 		double timeoutBonus;
 		double fitness;
 
-		Species^ species = pool->getSpecies()[pool->getCurrentSpecies()];
-		Genome^ genome = species->getGenome()[pool->getCurrentGenome()];
+		shared_ptr<Species> species = pool->getSpecies()[pool->getCurrentSpecies()];
+		shared_ptr<Genome> genome = species->getGenome()[pool->getCurrentGenome()];
 
 		if (pool->getCurrentFrame() == 1) {
 			clearDisplay();
@@ -89,14 +89,14 @@ void NeuralNetwork::runNeuralNetwork() {
 	}
 }
 
-void NeuralNetwork::runGenome(String^ filename) {
+void NeuralNetwork::runGenome(shared_ptr<string> filename) {
 	double fitness;
 	double timeoutBonus;
 	int currentFrame = 0;
 	bool running = true;
 		
 	createLabels();
-	Genome^ genome = loadGenome(filename);
+	shared_ptr<Genome> genome = loadGenome(filename);
 	genome->setParentPool(pool);
 	genome->generateNetwork();	
 	displayGenome(genome);
@@ -131,10 +131,10 @@ void NeuralNetwork::runGenome(String^ filename) {
 }
 
 void NeuralNetwork::initializePool() {
-	pool = gcnew Pool();
+	pool = make_shared<Pool>();
 	
 	for (int i = 0; i < GlobalVariables::Population; i++) {
-		Genome^ basicGenome = createBasicGenome();
+		shared_ptr<Genome> basicGenome = createBasicGenome();
 		pool->addToSpecies(basicGenome);
 	}	
 	
@@ -142,10 +142,10 @@ void NeuralNetwork::initializePool() {
 }
 
 void NeuralNetwork::initializeRun() {
-	Species^ species;
-	Genome^ genome;
+	shared_ptr<Species> species;
+	shared_ptr<Genome> genome;
 
-	playerForm->restartGame();
+	//playerForm->restartGame();
 	rightmost = 0;
 	pool->setCurrentFrame(0);
 	timeout = GlobalVariables::TimeoutConstant;
@@ -158,8 +158,8 @@ void NeuralNetwork::initializeRun() {
 	evaluateCurrent();
 }
 
-Genome^ NeuralNetwork::createBasicGenome() {
-	Genome^ genome = gcnew Genome();
+shared_ptr<Genome> NeuralNetwork::createBasicGenome() {
+	shared_ptr<Genome> genome = make_shared<Genome>();
 	// int innovation = 1; ?
 
 	genome->setParentPool(pool);
@@ -171,75 +171,75 @@ Genome^ NeuralNetwork::createBasicGenome() {
 }
 
 void NeuralNetwork::evaluateCurrent() {
-	Species^ species = pool->getSpecies()[pool->getCurrentSpecies()];
-	Genome^ genome = species->getGenome()[pool->getCurrentGenome()];
+	shared_ptr<Species> species = pool->getSpecies()[pool->getCurrentSpecies()];
+	shared_ptr<Genome> genome = species->getGenome()[pool->getCurrentGenome()];
 
-	List<double>^ inputs = gcnew List<double>();
-	inputs->Add(NULL);
-	inputs->Add(getCharacterX() / 962.0);
-	inputs->Add(getCharacterY() / 586.0);
-	inputs->Add((getEnemy1() - 422) / (149.0 - 18));
-	inputs->Add((getEnemy2() - 766) / (110.0 - 18));
-	inputs->Add(1.0);
+	shared_ptr<list<double>> inputs = make_shared<list<double>>();
+	inputs->push_back(NULL);
+	inputs->push_back(getCharacterX() / 962.0);
+	inputs->push_back(getCharacterY() / 586.0);
+	inputs->push_back((getEnemy1() - 422) / (149.0 - 18));
+	inputs->push_back((getEnemy2() - 766) / (110.0 - 18));
+	inputs->push_back(1.0);
 
 	// keyboard[0] = space, keyboard[1] = left, keyboard[2] = right
-	List<bool>^ keyboard = genome->evaluateNetwork(inputs);
+	shared_ptr<list<bool>> keyboard = genome->evaluateNetwork(inputs);
 
 	if (keyboard[1] == true && keyboard[2] == true) {
 		keyboard[1] = false;
 		keyboard[2] = false;
 	}
 
-	playerForm->setControls(keyboard);
+	//playerForm->setControls(keyboard);
 }
 
-void NeuralNetwork::evaluateGenome(Genome^ genome) {
-	List<double>^ inputs = gcnew List<double>();
-	inputs->Add(NULL);
-	inputs->Add(getCharacterX() / 962.0);
-	inputs->Add(getCharacterY() / 586.0);
-	inputs->Add((getEnemy1() - 422) / (149.0 - 18));
-	inputs->Add((getEnemy2() - 766) / (110.0 - 18));
-	inputs->Add(1.0);
+void NeuralNetwork::evaluateGenome(shared_ptr<Genome> genome) {
+	shared_ptr<list<double>> inputs = make_shared<list<double>>();
+	inputs->push_back(NULL);
+	inputs->push_back(getCharacterX() / 962.0);
+	inputs->push_back(getCharacterY() / 586.0);
+	inputs->push_back((getEnemy1() - 422) / (149.0 - 18));
+	inputs->push_back((getEnemy2() - 766) / (110.0 - 18));
+	inputs->push_back(1.0);
 
 	// keyboard[0] = space, keyboard[1] = left, keyboard[2] = right
-	List<bool>^ keyboard = genome->evaluateNetwork(inputs);
+	shared_ptr<list<bool>> keyboard = genome->evaluateNetwork(inputs);
 
 	if (keyboard[1] == true && keyboard[2] == true) {
 		keyboard[1] = false;
 		keyboard[2] = false;
 	}
 
-	playerForm->setControls(keyboard);
+	//playerForm->setControls(keyboard);
 }
 
 // character x position (PlayerForm->Size = (962, 586))
 double NeuralNetwork::getCharacterX() {
 	//return playerForm->getCharacter()->Location.X / 962.0;
-	return playerForm->getCharacter()->Location.X;
+	//return playerForm->getCharacter()->Location.X;
 }
 
 // character y position
 double NeuralNetwork::getCharacterY() {
 	//return playerForm->getCharacter()->Location.Y / 586.0;
-	return playerForm->getCharacter()->Location.Y;
+	//return playerForm->getCharacter()->Location.Y;
 }
 
 // enemy1 x position (platform5->Size.Width = 149, platform5->Location.X = 422, character->Size.Width = 19)
 double NeuralNetwork::getEnemy1() {
 	//return (playerForm->getEnemy1()->Location.X - 422) / (149.0 - 18);
-	return playerForm->getEnemy1()->Location.X;
+	//return playerForm->getEnemy1()->Location.X;
 }
 
 // enemy2 x position (platform8->Size.Width = 110, platform8->Location.X = 766)
 double NeuralNetwork::getEnemy2() {
 	//return (playerForm->getEnemy2()->Location.X - 766) / (110.0 - 18);
-	return playerForm->getEnemy2()->Location.X;
+	//return playerForm->getEnemy2()->Location.X;
 }
 
 bool NeuralNetwork::fitnessAlreadyMeasured() {
-	Species^ species = pool->getSpecies()[pool->getCurrentSpecies()];
-	Genome^ genome = species->getGenome()[pool->getCurrentGenome()];
+	shared_ptr<Species> species = pool->getSpecies()[pool->getCurrentSpecies()];
+	shared_ptr<Genome> genome = species->getGenome()[pool->getCurrentGenome()];
 
 	return (genome->getFitness() != 0);
 }
@@ -263,7 +263,7 @@ void NeuralNetwork::nextGenome() {
 void NeuralNetwork::saveGenome() {
 	// remove if statement to save genomes for every generation
 	if (pool->getSaveGenome() == true) {
-		Genome^ genome = pool->getSpecies()[pool->getMaxFitnessSpecies()]->getGenome()[pool->getMaxFitnessGenome()];
+		shared_ptr<Genome> genome = pool->getSpecies()[pool->getMaxFitnessSpecies()]->getGenome()[pool->getMaxFitnessGenome()];
 
 		String^ filename = "generation" + pool->getGeneration() + ".xml";
 		XmlWriterSettings^ xmlSettings = gcnew XmlWriterSettings();
@@ -354,8 +354,8 @@ void NeuralNetwork::saveGenome() {
 	return;
 }
 
-Genome^ NeuralNetwork::loadGenome(String^ filename) {
-	Genome^ genome = gcnew Genome();	
+shared_ptr<Genome> NeuralNetwork::loadGenome(String^ filename) {
+	shared_ptr<Genome> genome = gcnew Genome();	
 
 	XmlDocument^ xmlFile = gcnew XmlDocument();
 	xmlFile->Load(IO::Directory::GetCurrentDirectory() + "\\" + filename);	
@@ -391,7 +391,7 @@ Genome^ NeuralNetwork::loadGenome(String^ filename) {
 	return genome;
 }
 
-void NeuralNetwork::displayGenome(Genome^ genome) {
+void NeuralNetwork::displayGenome(shared_ptr<Genome> genome) {
 	List<int>^ neurons = gcnew List<int>();
 	bool exists;
 	int tempNeuron;
@@ -470,7 +470,7 @@ void NeuralNetwork::displayGenome(Genome^ genome) {
 	}
 }
 
-void NeuralNetwork::updateCellValues(Genome^ genome) {
+void NeuralNetwork::updateCellValues(shared_ptr<Genome> genome) {
 	for (int i = 1; i < genome->getNetwork()->getNeurons()->Count; i++) {
 		if (genome->getNetwork()->getNeurons()[i] != nullptr)
 			playerForm->getCellValue()[i] = genome->getNetwork()->getNeurons()[i]->getValue();
@@ -508,7 +508,7 @@ void NeuralNetwork::createLabels() {
 ////////////////////////////// Pool //////////////////////////////
 
 Pool::Pool() {
-	species = gcnew List<Species^>();
+	species = gcnew List<shared_ptr<Species>>();
 	species->Add(nullptr);
 	generation = 0;
 	//innovation = GlobalVariables::NumOutputs; 
@@ -523,7 +523,7 @@ Pool::Pool() {
 	saveGenome = false;
 }
 
-List<Species^>^ Pool::getSpecies() {
+List<shared_ptr<Species>>^ Pool::getSpecies() {
 	return species;
 }
 
@@ -545,7 +545,7 @@ void Pool::setCurrentGenome(int num) {
 	return;
 }
 
-void Pool::addToSpecies(Genome^ genome) {
+void Pool::addToSpecies(shared_ptr<Genome> genome) {
 	for (int i = 1; i < species->Count; i++) {
 		if (isSameSpecies(genome, species[i]->getGenome()[1])) {
 			species[i]->getGenome()->Add(genome);
@@ -553,13 +553,13 @@ void Pool::addToSpecies(Genome^ genome) {
 		}
 	}
 
-	Species^ newSpecies = gcnew Species();
+	shared_ptr<Species> newSpecies = gcnew Species();
 	newSpecies->getGenome()->Add(genome);
 	species->Add(newSpecies);
 	return;
 }
 
-bool Pool::isSameSpecies(Genome^ genome1, Genome^ genome2) {
+bool Pool::isSameSpecies(shared_ptr<Genome> genome1, shared_ptr<Genome> genome2) {
 	int maxGenes = std::max(genome1->getGenes()->Count - 1, genome2->getGenes()->Count - 1);
 	//double numDisjoint = numDisjointGenes(genome1, genome2);
 	//double numExcess = numExcessGenes(genome1, genome2);
@@ -574,7 +574,7 @@ bool Pool::isSameSpecies(Genome^ genome1, Genome^ genome2) {
 		return false;
 }
 
-int Pool::numDisjointExcessGenes(Genome^ genome1, Genome^ genome2) {
+int Pool::numDisjointExcessGenes(shared_ptr<Genome> genome1, shared_ptr<Genome> genome2) {
 	List<bool>^ innovation1 = gcnew List<bool>();
 	List<bool>^ innovation2 = gcnew List<bool>();
 	int numDisjoint = 0;
@@ -609,7 +609,7 @@ int Pool::numDisjointExcessGenes(Genome^ genome1, Genome^ genome2) {
 }
 
 // needs to be fixed
-int Pool::numDisjointGenes(Genome^ genome1, Genome^ genome2) {
+int Pool::numDisjointGenes(shared_ptr<Genome> genome1, shared_ptr<Genome> genome2) {
 	List<bool>^ innovation1 = gcnew List<bool>();
 	List<bool>^ innovation2 = gcnew List<bool>();
 	int numDisjoint = 0;
@@ -638,7 +638,7 @@ int Pool::numDisjointGenes(Genome^ genome1, Genome^ genome2) {
 }
 
 // needs to be fixed
-int Pool::numExcessGenes(Genome^ genome1, Genome^ genome2) {
+int Pool::numExcessGenes(shared_ptr<Genome> genome1, shared_ptr<Genome> genome2) {
 	List<bool>^ innovation1 = gcnew List<bool>();
 	List<bool>^ innovation2 = gcnew List<bool>();
 	int numExcess = 0;
@@ -666,7 +666,7 @@ int Pool::numExcessGenes(Genome^ genome1, Genome^ genome2) {
 	return numExcess;
 }
 
-double Pool::weightDifferences(Genome^ genome1, Genome^ genome2) {
+double Pool::weightDifferences(shared_ptr<Genome> genome1, shared_ptr<Genome> genome2) {
 	List<Gene^>^ genes1 = gcnew List<Gene^>();
 	double totalWeight = 0;
 	int numMatching = 0;
@@ -765,7 +765,7 @@ void Pool::newGeneration() {
 	
 	double sum;
 	int breed;
-	List<Genome^>^ offspring = gcnew List<Genome^>();
+	List<shared_ptr<Genome>>^ offspring = gcnew List<shared_ptr<Genome>>();
 	
 	cullWeakGenomes();
 	cullSpecies(false);
@@ -795,7 +795,7 @@ void Pool::newGeneration() {
 	/*
 	double sum;
 	int breed;
-	List<Genome^>^ offspring = gcnew List<Genome^>();
+	List<shared_ptr<Genome>>^ offspring = gcnew List<shared_ptr<Genome>>();
 
 	cullSpecies(false);
 	rankGlobally();
@@ -881,7 +881,7 @@ double Pool::totalAdjustedFitness() {
 
 void Pool::rankGlobally() {
 	int count = 1;
-	Species^ globalSpecies = gcnew Species();
+	shared_ptr<Species> globalSpecies = gcnew Species();
 
 	for (int i = 1; i < species->Count; i++)
 		for (int j = 1; j < species[i]->getGenome()->Count; j++) 
@@ -902,7 +902,7 @@ void Pool::rankGlobally() {
 }
 
 void Pool::removeStaleSpecies() {
-	List<Species^>^ survived = gcnew List<Species^>();
+	List<shared_ptr<Species>>^ survived = gcnew List<shared_ptr<Species>>();
 	survived->Add(nullptr);
 	for (int i = 1; i < species->Count; i++) {
 		species[i]->sortGenomesDescending(1, species[i]->getGenome()->Count - 1);
@@ -922,7 +922,7 @@ void Pool::removeStaleSpecies() {
 
 void Pool::removeWeakSpecies() {
 	int breed;
-	List<Species^>^ survived = gcnew List<Species^>();
+	List<shared_ptr<Species>>^ survived = gcnew List<shared_ptr<Species>>();
 	survived->Add(nullptr);
 	for (int i = 1; i < species->Count; i++) {
 		breed = floor(species[i]->getAverageFitness() / totalAverageFitness() * GlobalVariables::Population);
@@ -959,7 +959,7 @@ double Pool::totalAverageFitness() {
 ////////////////////////////// Species //////////////////////////////
 
 Species::Species() {
-	genomes = gcnew List<Genome^>();
+	genomes = gcnew List<shared_ptr<Genome>>();
 	genomes->Add(nullptr);
 	topFitness = 0;
 	staleness = 0;
@@ -967,7 +967,7 @@ Species::Species() {
 	averageFitness = 0;
 }
 
-List<Genome^>^ Species::getGenome() {
+List<shared_ptr<Genome>>^ Species::getGenome() {
 	return genomes;
 }
 
@@ -1003,7 +1003,7 @@ void Species::sortGenomesDescending(int first, int last) {
 		double pivot = genomes[rand() % (last - first + 1) + first]->getFitness();
 		int left = first;
 		int right = last;
-		Genome^ tempGenome;
+		shared_ptr<Genome> tempGenome;
 		// exit loop when both pointers point to pivot (this occurs when they are equal)
 		while (left <= right) {			
 			// find left element that is less than or equal to pivot
@@ -1034,7 +1034,7 @@ void Species::sortGenomesAscending(int first, int last) {
 		double pivot = genomes[rand() % (last - first + 1) + first]->getFitness();
 		int left = first;
 		int right = last;
-		Genome^ tempGenome;
+		shared_ptr<Genome> tempGenome;
 		// exit loop when both pointers point to pivot (this occurs when they are equal)
 		while (left <= right) {
 			// find left element that is greater than or equal to pivot
@@ -1077,10 +1077,10 @@ void Species::calculateAverageFitness() {
 	return;
 }
 
-Genome^ Species::breedChild() {
-	Genome^ child;
-	Genome^ genome1 = genomes[(rand() % (genomes->Count - 1)) + 1];
-	Genome^ genome2 = genomes[(rand() % (genomes->Count - 1)) + 1];
+shared_ptr<Genome> Species::breedChild() {
+	shared_ptr<Genome> child;
+	shared_ptr<Genome> genome1 = genomes[(rand() % (genomes->Count - 1)) + 1];
+	shared_ptr<Genome> genome2 = genomes[(rand() % (genomes->Count - 1)) + 1];
 			
 	if (((double)rand() / (RAND_MAX)) < GlobalVariables::CrossoverChance)
 		child = crossover(genome1, genome2);
@@ -1092,10 +1092,10 @@ Genome^ Species::breedChild() {
 	return child;
 }
 
-Genome^ Species::crossover(Genome^ genome1, Genome^ genome2) {
-	Genome^ tempGenome;
+shared_ptr<Genome> Species::crossover(shared_ptr<Genome> genome1, shared_ptr<Genome> genome2) {
+	shared_ptr<Genome> tempGenome;
 	List<Gene^>^ innovation2 = gcnew List<Gene^>();
-	Genome^ child = gcnew Genome();
+	shared_ptr<Genome> child = gcnew Genome();
 	
 	int maxInnov = 0;
 	for (int i = 1; i < genome1->getGenes()->Count; i++)
@@ -1592,8 +1592,8 @@ double Genome::sigmoid(double x) {
 	return (2 / (1 + exp(-4.9 * x)) - 1);
 }
 
-Genome^ Genome::copyGenome() {
-	Genome^ newGenome = gcnew Genome();
+shared_ptr<Genome> Genome::copyGenome() {
+	shared_ptr<Genome> newGenome = gcnew Genome();
 
 	for (int i = 1; i < genes->Count; i++)
 		newGenome->getGenes()->Add(genes[i]->copyGene());

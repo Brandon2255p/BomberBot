@@ -1,36 +1,34 @@
 #pragma once
 
-#include "PlayerForm.h"
-
+#include <functional>
 #include <algorithm>
 #include <stdlib.h>   
 #include <time.h> 
 #include <iostream>
+#include <string>
+#include <memory>
+#include <list>
+using namespace std;
 
-using namespace System::Collections::Generic;
-using namespace GUI;
-using namespace Xml;
+class GlobalVariables;
+ class NeuralNetwork;
+ class Pool;
+ class Species;
+ class Genome;
+ class Network;
+ class Gene;
+ class Neuron;
 
-ref class GlobalVariables;
-ref class NeuralNetwork;
-ref class Pool;
-ref class Species;
-ref class Genome;
-ref class Network;
-ref class Gene;
-ref class Neuron;
-
-static ref class GlobalVariables {
-public:
+namespace GlobalVariables {
 	static int Population = 300;
 
-	static int NumInputs = 4+1;
+	static int NumInputs = 4 + 1;
 	static int NumOutputs = 3;
 	static int MaxNodes = 1000;
 
-	static double MutateConnectionsChance = 0.25;
-	static double PerturbChance = 0.90;
-	static double CrossoverChance = 0.75; // set to 1 if you want all new organisms in new generation to be bred, rather than some to be cloned
+	const static double MutateConnectionsChance = 0.25;
+	const static double PerturbChance = 0.90;
+	const static double CrossoverChance = 0.75; // set to 1 if you want all new organisms in new generation to be bred, rather than some to be cloned
 	static double LinkMutationChance = 2.0;
 	static double BiasMutationChance = 0.4;
 	static double NodeMutationChance = 0.5;
@@ -51,23 +49,23 @@ public:
 	//static double SigmoidBias = 0;
 };
 
-public ref class NeuralNetwork {
+class NeuralNetwork {
 public:
 	NeuralNetwork();
 	void runPlayerForm();
 	void runNeuralNetwork();
-	void runGenome(String^);
+	void runGenome(shared_ptr<string>);
 	void initializePool();
 	void initializeRun();
-	Genome^ createBasicGenome();
+	shared_ptr<Genome> createBasicGenome();
 	void evaluateCurrent();
-	void evaluateGenome(Genome^);
+	void evaluateGenome(shared_ptr<Genome>);
 	bool fitnessAlreadyMeasured();
 	void nextGenome();
 	void saveGenome();
-	Genome^ loadGenome(String^);
-	void displayGenome(Genome^);
-	void updateCellValues(Genome^);	
+	shared_ptr<Genome> loadGenome(shared_ptr<string>);
+	void displayGenome(shared_ptr<Genome>);
+	void updateCellValues(shared_ptr<Genome>);
 	void clearDisplay();
 	void updateLabels();
 	void createLabels();
@@ -77,17 +75,16 @@ public:
 	double getEnemy1(); // enemy1 x position
 	double getEnemy2(); // enemy2 x position
 private:
-	PlayerForm^ playerForm;
-	Pool^ pool;
+	shared_ptr <Pool> pool;
 
 	int rightmost;
 	int timeout;
 };
 
-public ref class Pool {
+class Pool {
 public:
 	Pool();
-	List<Species^>^ getSpecies();
+	shared_ptr<list<shared_ptr<Species>>> getSpecies();
 	int getCurrentSpecies();
 	void setCurrentSpecies(int);
 	int getCurrentGenome();
@@ -106,12 +103,12 @@ public:
 	bool getSaveGenome();
 	void setSaveGenome(bool);
 
-	void addToSpecies(Genome^);
-	bool isSameSpecies(Genome^, Genome^);
-	int numExcessGenes(Genome^, Genome^);
-	int numDisjointGenes(Genome^, Genome^);
-	int numDisjointExcessGenes(Genome^, Genome^);
-	double weightDifferences(Genome^, Genome^);
+	void addToSpecies(shared_ptr<Genome>);
+	bool isSameSpecies(shared_ptr<Genome>, shared_ptr<Genome>);
+	int numExcessGenes(shared_ptr<Genome>, shared_ptr<Genome>);
+	int numDisjointGenes(shared_ptr<Genome>, shared_ptr<Genome>);
+	int numDisjointExcessGenes(shared_ptr<Genome>, shared_ptr<Genome>);
+	double weightDifferences(shared_ptr<Genome>, shared_ptr<Genome>);
 	int newInnovation();
 	void newGeneration();
 	void cullSpecies(bool);
@@ -124,7 +121,7 @@ public:
 	double totalAverageFitness();
 
 private:
-	List<Species^>^ species;
+	shared_ptr<list<shared_ptr<Species>>> species;
 	int generation;
 	int innovation;
 	int currentSpecies;
@@ -137,10 +134,10 @@ private:
 	bool saveGenome;
 };
 
-public ref class Species {
+class Species {
 public:
 	Species();
-	List<Genome^>^ getGenome();
+	shared_ptr<list<shared_ptr<Genome>>> getGenome();
 	double getTotalAdjustedFitness();
 	double getTopFitness();
 	void setTopFitness(double);
@@ -152,10 +149,10 @@ public:
 	void sortGenomesDescending(int, int);
 	void calculateAdjustedFitness();	
 	void calculateAverageFitness();
-	Genome^ breedChild();
-	Genome^ crossover(Genome^, Genome^);
+	shared_ptr<Genome> breedChild();
+	shared_ptr<Genome> crossover(shared_ptr<Genome>, shared_ptr<Genome>);
 private:
-	List<Genome^>^ genomes;
+	shared_ptr<list<shared_ptr<Genome>>> genomes;
 
 	double topFitness;
 	int staleness;
@@ -163,21 +160,21 @@ private:
 	double averageFitness;
 };
 
-public ref class Genome {
+class Genome {
 public:
 	Genome();
 	int getMaxNeuron();
 	void setMaxNeuron(int);
-	List<Gene^>^ getGenes();
-	Pool^ getParentPool();
-	void setParentPool(Pool^);
+	shared_ptr<list<shared_ptr<Gene>>> getGenes();
+	shared_ptr<Pool> getParentPool();
+	void setParentPool(shared_ptr<Pool>);
 	double getFitness();
 	void setFitness(double);
 	double getAdjustedFitness();
 	void setAdjustedFitness(double);
 	int getGlobalRank();
 	void setGlobalRank(int);
-	Network^ getNetwork();
+	shared_ptr<Network> getNetwork();
 
 	double getConnectionsMR();
 	void setConnectionsMR(double);
@@ -202,17 +199,17 @@ public:
 	void nodeMutate();
 	void enableDisableMutate(bool);
 	int randomNeuron(bool);
-	bool containsLink(Gene^);	
+	bool containsLink(shared_ptr<Gene>);
 	void generateNetwork();
 	void sortGenes(int, int);
-	List<bool>^ evaluateNetwork(List<double>^);
+	shared_ptr<list<bool>> evaluateNetwork(shared_ptr<list<double>>);
 	double sigmoid(double);
-	Genome^ copyGenome();
+	shared_ptr<Genome> copyGenome();
 private:
-	List<Gene^>^ genes; 
+	shared_ptr<list<shared_ptr<Gene>>> genes;
 
-	Network^ network;
-	Pool^ parentPool;
+	shared_ptr<Network> network;
+	shared_ptr<Pool> parentPool;
 
 	double fitness;
 	double adjustedFitness;
@@ -229,26 +226,26 @@ private:
 	double stepMR;
 };
 
-public ref class Network {
+class Network {
 public:
 	Network();
-	List<Neuron^>^ getNeurons();
+	shared_ptr<list<shared_ptr<Neuron>>> getNeurons();
 private:
-	List<Neuron^>^ neurons;
+	shared_ptr<list<shared_ptr<Neuron>>> neurons;
 };
 
-public ref class Neuron { // node gene
+class Neuron { // node gene
 public:
 	Neuron();
-	List<Gene^>^ getIncomingGenes();
+	shared_ptr<list<shared_ptr<Gene>>> getIncomingGenes();
 	double getValue();
 	void setValue(double);
 private:
-	List<Gene^>^ incomingGenes;
+	shared_ptr<list<shared_ptr<Gene>>> incomingGenes;
 	double value;
 };
 
-public ref class Gene { // connection gene
+class Gene { // connection gene
 public:
 	Gene();
 	int getInnovNum();
@@ -262,7 +259,7 @@ public:
 	int getOutNode();
 	void setOutNode(int);
 
-	Gene^ copyGene();
+	shared_ptr<Gene> copyGene();
 private:
 	int inNode;
 	int outNode;
