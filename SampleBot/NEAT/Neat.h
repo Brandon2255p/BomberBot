@@ -7,7 +7,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
-#include <list>
+#include <vector>
 using namespace std;
 
 class GlobalVariables;
@@ -26,9 +26,9 @@ namespace GlobalVariables {
 	static int NumOutputs = 3;
 	static int MaxNodes = 1000;
 
-	const static double MutateConnectionsChance = 0.25;
-	const static double PerturbChance = 0.90;
-	const static double CrossoverChance = 0.75; // set to 1 if you want all new organisms in new generation to be bred, rather than some to be cloned
+	static double MutateConnectionsChance = 0.25;
+	static double PerturbChance = 0.90;
+	static double CrossoverChance = 0.75; // set to 1 if you want all new organisms in new generation to be bred, rather than some to be cloned
 	static double LinkMutationChance = 2.0;
 	static double BiasMutationChance = 0.4;
 	static double NodeMutationChance = 0.5;
@@ -63,7 +63,7 @@ public:
 	bool fitnessAlreadyMeasured();
 	void nextGenome();
 	void saveGenome();
-	shared_ptr<Genome> loadGenome(shared_ptr<string>);
+	shared_ptr<Genome> loadGenome(string);
 	void displayGenome(shared_ptr<Genome>);
 	void updateCellValues(shared_ptr<Genome>);
 	void clearDisplay();
@@ -84,7 +84,7 @@ private:
 class Pool {
 public:
 	Pool();
-	shared_ptr<list<shared_ptr<Species>>> getSpecies();
+	vector<shared_ptr<Species>> getSpecies();
 	int getCurrentSpecies();
 	void setCurrentSpecies(int);
 	int getCurrentGenome();
@@ -121,7 +121,7 @@ public:
 	double totalAverageFitness();
 
 private:
-	shared_ptr<list<shared_ptr<Species>>> species;
+	vector<shared_ptr<Species>> species;
 	int generation;
 	int innovation;
 	int currentSpecies;
@@ -137,7 +137,7 @@ private:
 class Species {
 public:
 	Species();
-	shared_ptr<list<shared_ptr<Genome>>> getGenome();
+	vector<shared_ptr<Genome>> &getGenome();
 	double getTotalAdjustedFitness();
 	double getTopFitness();
 	void setTopFitness(double);
@@ -152,7 +152,7 @@ public:
 	shared_ptr<Genome> breedChild();
 	shared_ptr<Genome> crossover(shared_ptr<Genome>, shared_ptr<Genome>);
 private:
-	shared_ptr<list<shared_ptr<Genome>>> genomes;
+	vector<shared_ptr<Genome>> genomes;
 
 	double topFitness;
 	int staleness;
@@ -165,7 +165,7 @@ public:
 	Genome();
 	int getMaxNeuron();
 	void setMaxNeuron(int);
-	shared_ptr<list<shared_ptr<Gene>>> getGenes();
+	vector<shared_ptr<Gene>> &getGenes();
 	shared_ptr<Pool> getParentPool();
 	void setParentPool(shared_ptr<Pool>);
 	double getFitness();
@@ -202,11 +202,11 @@ public:
 	bool containsLink(shared_ptr<Gene>);
 	void generateNetwork();
 	void sortGenes(int, int);
-	shared_ptr<list<bool>> evaluateNetwork(shared_ptr<list<double>>);
+	vector<bool> evaluateNetwork(vector<double>);
 	double sigmoid(double);
 	shared_ptr<Genome> copyGenome();
 private:
-	shared_ptr<list<shared_ptr<Gene>>> genes;
+	vector<shared_ptr<Gene>> genes;
 
 	shared_ptr<Network> network;
 	shared_ptr<Pool> parentPool;
@@ -229,19 +229,19 @@ private:
 class Network {
 public:
 	Network();
-	shared_ptr<list<shared_ptr<Neuron>>> getNeurons();
+	vector<shared_ptr<Neuron>> &getNeurons();
 private:
-	shared_ptr<list<shared_ptr<Neuron>>> neurons;
+	vector<shared_ptr<Neuron>> neurons;
 };
 
 class Neuron { // node gene
 public:
 	Neuron();
-	shared_ptr<list<shared_ptr<Gene>>> getIncomingGenes();
+	vector<shared_ptr<Gene>> &getIncomingGenes();
 	double getValue();
 	void setValue(double);
 private:
-	shared_ptr<list<shared_ptr<Gene>>> incomingGenes;
+	vector<shared_ptr<Gene>> incomingGenes;
 	double value;
 };
 

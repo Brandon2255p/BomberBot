@@ -19,7 +19,7 @@ void readStateFile(string filePath);
 void writeMoveFile(string filePath);
 
 //Instantiate the Log File
-Logger Log("C:\\Users\\bpiner\\Downloads\\Bomberman\\Sample Bots\\C++\\MoveLog");
+Logger Log("C:\\Users\\brand\\Downloads\\Bomberman\\Sample Bots\\C++\\MoveLog");
 
 cMapState currentMap;
 vector<PlayerState> vPlayerState;
@@ -110,7 +110,15 @@ void writeMoveFile(string filePath)
 	currentMap.ClosestBomb(vPlayerState[3].GetLocation());
 	cout << "Writing move file " << filePath + "\\" + "move.txt" << std::endl;
 	ofstream outfile(filePath + "\\" + "move.txt");
+	Json::Value jsonSettings;
+	jsonSettings["genome"]["object"]["genes"] = "thisisagene";
 
+	for (int i = 1; i < 5; i++) {
+		jsonSettings["genome"]["object"]["list"][i]["one"] = "ten";
+		jsonSettings["genome"]["object"]["list"][i]["two"] = Json::Value::Int(i);
+	}
+	
+	outfile << jsonSettings << endl;
 	if (outfile.is_open())
 	{
 		random_device rd; 
