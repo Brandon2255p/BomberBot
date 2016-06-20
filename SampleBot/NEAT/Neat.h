@@ -1,4 +1,5 @@
 #pragma once
+#include "../../NEATServer/GenomeView.h"
 
 #include <functional>
 #include <algorithm>
@@ -10,7 +11,6 @@
 #include <vector>
 using namespace std;
 
-class GlobalVariables;
  class NeuralNetwork;
  class Pool;
  class Species;
@@ -54,7 +54,7 @@ public:
 	NeuralNetwork();
 	void runPlayerForm();
 	void runNeuralNetwork();
-	void runGenome(shared_ptr<string>);
+	void runGenome(string);
 	void initializePool();
 	void initializeRun();
 	shared_ptr<Genome> createBasicGenome();
@@ -75,6 +75,7 @@ public:
 	double getEnemy1(); // enemy1 x position
 	double getEnemy2(); // enemy2 x position
 private:
+
 	shared_ptr <Pool> pool;
 
 	int rightmost;

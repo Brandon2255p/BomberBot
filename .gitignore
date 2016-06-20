@@ -1,2 +1,12 @@
 *.lnk
 *.txt
+*.suo
+NEATServer/GenomeView.resx
+*.pdb
+NEATServer/Debug/Project1.GenomeView.resources
+*.cache
+*.tlog
+NEATServer/Debug/.NETFramework,Version=v4.5.AssemblyAttributes.obj
+*.obj
+NEATServer/Debug/NEATServer.exe.metagen
+*.log
