@@ -12,6 +12,7 @@
 #include "PlayerState.h"
 #include "Block.h"
 #include "Map.h"
+#include "NEAT\Neat.h"
 
 using namespace std;
 
@@ -41,6 +42,10 @@ int main(int argc, char* argv[])
 
 	readStateFile(filePath);
 	writeMoveFile(filePath);
+
+	NeuralNetwork NN;
+	shared_ptr<Genome> tempGenome = NN.loadGenome(filePath + "\\" + "genome.json");
+
 	return 0;
 }
 

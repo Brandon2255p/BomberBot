@@ -4,7 +4,7 @@
 
 NeuralNetwork::NeuralNetwork() {	
 	
-	runNeuralNetwork();
+	//runNeuralNetwork();
 }
 
 void NeuralNetwork::runNeuralNetwork() {	
@@ -284,42 +284,47 @@ void NeuralNetwork::saveGenome() {
 }
 
 shared_ptr<Genome> NeuralNetwork::loadGenome(string filename) {
+	cout << "File to genome: " << filename << endl;
 	shared_ptr<Genome> genome = make_shared< Genome>();	
 	ifstream myfile(filename);
-	if (myfile.is_open())
+
+	//if (myfile.is_open())
 	{
 		// Read the file into json object
 		Json::Value jsonSettings;
 		myfile >> jsonSettings;
 
 		// read genome information
-		jsonSettings["genome"]["info"]["generation"] = pool->getGeneration();
-		jsonSettings["genome"]["info"]["species"] = pool->getMaxFitnessSpecies();
-		jsonSettings["genome"]["info"]["genome"] = pool->getMaxFitnessGenome();
+		//jsonSettings["genome"]["info"]["generation"] = pool->getGeneration();
+		//jsonSettings["genome"]["info"]["species"] = pool->getMaxFitnessSpecies();
+		//jsonSettings["genome"]["info"]["genome"] = pool->getMaxFitnessGenome();
 		// write genome object
-		genome->setFitness(jsonSettings["genome"]["object"]["fitness"].asDouble());
-		genome->setMaxNeuron(jsonSettings["genome"]["object"]["maxneuron"].asInt());
-		genome->setGlobalRank(jsonSettings["genome"]["object"]["globalrank"].asInt());
-		genome->setConnectionsMR(jsonSettings["genome"]["object"]["connectionsmr"].asDouble());
-		genome->setLinkMR(jsonSettings["genome"]["object"]["linkmr"].asDouble());
-		genome->setBiasMR(jsonSettings["genome"]["object"]["biasmr"].asDouble());
-		genome->setNodeMR(jsonSettings["genome"]["object"]["nodemr"].asDouble());
-		genome->setEnableMR(jsonSettings["genome"]["object"]["enablemr"].asDouble());
-		genome->setDisableMR(jsonSettings["genome"]["object"]["disablemr"].asDouble());
-		genome->setStepMR(jsonSettings["genome"]["object"]["stepmr"].asDouble());
+		const Json::Value GenomeObject = jsonSettings["genome"]["object"];
+		genome->setFitness(GenomeObject["fitness"].asDouble());
+		genome->setMaxNeuron(GenomeObject["maxneuron"].asInt());
+		genome->setGlobalRank(GenomeObject["globalrank"].asInt());
+		genome->setConnectionsMR(GenomeObject["connectionsmr"].asDouble());
+		genome->setLinkMR(GenomeObject["linkmr"].asDouble());
+		genome->setBiasMR(GenomeObject["biasmr"].asDouble());
+		genome->setNodeMR(GenomeObject["nodemr"].asDouble());
+		genome->setEnableMR(GenomeObject["enablemr"].asDouble());
+		genome->setDisableMR(GenomeObject["disablemr"].asDouble());
+		genome->setStepMR(GenomeObject["stepmr"].asDouble());
 		// genes
-		for (int i = 1; i < genome->getGenes().size(); i++) {
+		for (auto iter : GenomeObject["genes"]) {
 			shared_ptr<Gene> tempGene = make_shared<Gene>();
-			tempGene->setInNode(jsonSettings["genome"]["object"]["genes"][i]["innode"].asInt());
-			tempGene->setOutNode(jsonSettings["genome"]["object"]["genes"][i]["outnode"].asInt());
-			tempGene->setWeight(jsonSettings["genome"]["object"]["genes"][i]["weight"].asDouble());
-			tempGene->setEnabled(jsonSettings["genome"]["object"]["genes"][i]["isenabled"].asBool());
-			tempGene->setInnovNum(jsonSettings["genome"]["object"]["genes"][i]["innovationnum"].asInt());
+			tempGene->setInNode(iter["innode"].asInt());
+			tempGene->setOutNode(iter["outnode"].asInt());
+			tempGene->setWeight(iter["weight"].asDouble());
+			tempGene->setEnabled(iter["isenabled"].asBool());
+			tempGene->setInnovNum(iter["innovationnum"].asInt());
+			cout << tempGene->getInnovNum() << endl;
 			genome->getGenes().push_back(tempGene);
 		}
 		//playerForm->getLabelValues()[1] = Convert::ToDouble(root->SelectSingleNode("info")->SelectSingleNode("generation")->InnerText);
 		//playerForm->getLabelValues()[2] = Convert::ToDouble(root->SelectSingleNode("info")->SelectSingleNode("species")->InnerText);
 		//playerForm->getLabelValues()[3] = Convert::ToDouble(root->SelectSingleNode("info")->SelectSingleNode("genome")->InnerText);
+		myfile.close();
 	}
 	return genome;
 }
