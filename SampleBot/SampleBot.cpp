@@ -19,7 +19,7 @@ void readStateFile(string filePath);
 void writeMoveFile(string filePath);
 
 //Instantiate the Log File
-Logger Log("C:\\Users\\brand\\Downloads\\Bomberman\\Sample Bots\\C++\\MoveLog");
+Logger Log("C:\\Users\\bpiner\\Downloads\\Bomberman\\Sample Bots\\C++\\MoveLog");
 
 cMapState currentMap;
 vector<PlayerState> vPlayerState;

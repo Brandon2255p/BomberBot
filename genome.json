@@ -1,0 +1,238 @@
+{
+	"genome" : 
+	{
+		"info" : 
+		{
+			"generation" : 4,
+			"species" : 11,
+			"genome" : 7
+		},
+		"object" : 
+		{
+			"fitness" : 294,
+			"maxneuron" : 9,
+			"globalrank" : 0,
+			"connectionsmr" : 0.263156710528092,
+			"linkmr" : 2.10525368422474,
+			"biasmr" : 0.342949485575,
+			"nodemr" : 0.42868685696875,
+			"enablemr" : 0.1714747427875,
+			"disablemr" : 0.421050736844947,
+			"stepmr" : 0.0949997150002137,
+			"genes" : 
+			[
+				{
+					"innode" : 3,
+					"outnode" : 6,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 7847
+				},
+				{
+					"innode" : 5,
+					"outnode" : 6,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 7848
+				},
+				{
+					"innode" : 1,
+					"outnode" : 6,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 5906
+				},
+				{
+					"innode" : 6,
+					"outnode" : 6,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 7293
+				},
+				{
+					"innode" : 4,
+					"outnode" : 6,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 5237
+				},
+				{
+					"innode" : 3,
+					"outnode" : 6,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 7294
+				},
+				{
+					"innode" : 4,
+					"outnode" : 8,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 7294
+				},
+				{
+					"innode" : 1,
+					"outnode" : 9,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 7849
+				},
+				{
+					"innode" : 4,
+					"outnode" : 1001,
+					"weight" : 1.98596148564104,
+					"isenabled" : false,
+					"innovationnum" : 3645
+				},
+				{
+					"innode" : 9,
+					"outnode" : 1001,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 7850
+				},
+				{
+					"innode" : 1,
+					"outnode" : 1001,
+					"weight" : 1.98596148564104,
+					"isenabled" : false,
+					"innovationnum" : 3636
+				},
+				{
+					"innode" : 1002,
+					"outnode" : 1001,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 5235
+				},
+				{
+					"innode" : 5,
+					"outnode" : 1001,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 3648
+				},
+				{
+					"innode" : 8,
+					"outnode" : 1001,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 3642
+				},
+				{
+					"innode" : 3,
+					"outnode" : 1001,
+					"weight" : 1.98596148564104,
+					"isenabled" : false,
+					"innovationnum" : 3642
+				},
+				{
+					"innode" : 2,
+					"outnode" : 10221,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 3639
+				},
+				{
+					"innode" : 3,
+					"outnode" : 1002,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 3643
+				},
+				{
+					"innode" : 1003,
+					"outnode" : 1002,
+					"weight" : 1.98596148564104,
+					"isenabled" : false,
+					"innovationnum" : 3651
+				},
+				{
+					"innode" : 5,
+					"outnode" : 1002,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 3646
+				},
+				{
+					"innode" : 4,
+					"outnode" : 1002,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 3646
+				},
+				{
+					"innode" : 1,
+					"outnode" : 1002,
+					"weight" : 1.98596148564104,
+					"isenabled" : false,
+					"innovationnum" : 3637
+				},
+				{
+					"innode" : 2,
+					"outnode" : 1002,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 3640
+				},
+				{
+					"innode" : 1002,
+					"outnode" : 1002,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 3652
+				},
+				{
+					"innode" : 4,
+					"outnode" : 1003,
+					"weight" : 1.98596148564104,
+					"isenabled" : false,
+					"innovationnum" : 3647
+				},
+				{
+					"innode" : 3,
+					"outnode" : 1003,
+					"weight" : 1.98596148564104,
+					"isenabled" : false,
+					"innovationnum" : 3644
+				},
+				{
+					"innode" : 1,
+					"outnode" : 1003,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 3638
+				},
+				{
+					"innode" : 2,
+					"outnode" : 1003,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 3641
+				},
+				{
+					"innode" : 5,
+					"outnode" : 1003,
+					"weight" : 1.98596148564104,
+					"isenabled" : false,
+					"innovationnum" : 3650
+				},
+				{
+					"innode" : 6,
+					"outnode" : 1003,
+					"weight" : 1.98596148564104,
+					"isenabled" : false,
+					"innovationnum" : 5238
+				},
+				{
+					"innode" : 1002,
+					"outnode" : 1003,
+					"weight" : 1.98596148564104,
+					"isenabled" : true,
+					"innovationnum" : 5236
+				},
+			]
+		}
+	}
+}
+

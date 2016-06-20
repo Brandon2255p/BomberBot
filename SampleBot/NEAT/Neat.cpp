@@ -1,7 +1,6 @@
 #include "Neat.h"
 #include "../json/json.h"
 #include <fstream>
-using namespace NEATServer;
 
 NeuralNetwork::NeuralNetwork() {	
 	

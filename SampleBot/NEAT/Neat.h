@@ -1,5 +1,4 @@
 #pragma once
-#include "../../NEATServer/GenomeView.h"
 
 #include <functional>
 #include <algorithm>

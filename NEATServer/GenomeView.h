@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include "../SampleBot/NEAT/Neat.h"
 
 namespace NEATServer {
 

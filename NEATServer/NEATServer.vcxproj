@@ -79,6 +79,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\SampleBot\jsoncpp.cpp" />
     <ClCompile Include="..\SampleBot\NEAT\Neat.cpp" />
     <ClCompile Include="GenomeView.cpp" />
   </ItemGroup>

@@ -10,3 +10,4 @@ NEATServer/Debug/.NETFramework,Version=v4.5.AssemblyAttributes.obj
 *.obj
 NEATServer/Debug/NEATServer.exe.metagen
 *.log
+NEATServer/Debug/NEATServer.exe

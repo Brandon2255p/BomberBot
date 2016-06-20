@@ -13,6 +13,8 @@ void Main(array<String^>^ args)
 
 	NEATServer::GenomeView form;
 	Application::Run(%form);
+	NeuralNetwork mainNeuralNet;
+	mainNeuralNet.loadGenome();
 }
 
 
